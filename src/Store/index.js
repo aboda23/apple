@@ -1,9 +1,19 @@
 import { create } from "zustand";
+// import p1 from "../assets/images/performance1.png";
+// import p2 from "../assets/images/performance2.png";
+// import p3 from "../assets/images/performance3.png";
+// import p4 from "../assets/images/performance4.png";
+// import p5 from "../assets/images/performance5.jpg";
+// import p6 from "../assets/images/performance6.png";
+// import p7 from "../assets/images/performance7.png";
+// import { create } from "zustand";
+import video1 from "../assets/videos/feature-1.mp4";
 const navLinks = [{ label: "Store" }, { label: "Mac" }, { label: "iPhone" }, { label: "Watch" }, { label: "Vision" }, { label: "AirPods" }];
 const useMacbookStore = create((set) => ({
     color: "#2e2c2e",
     setColor: (color) => set({ color }),
     scale: 0.08,
+    texture: video1,
     setScale: (scale) => set({ scale }),
     reset: () => set({ color: "#2e2c2e", scale: 0.08 }),
 }));
@@ -36,6 +46,15 @@ const performanceImages = [
     { id: "p7", src: "/performance7.png" },
 ];
 
+// const performanceImages = [
+//     { id: "p1", src: p1 },
+//     { id: "p2", src: p2 },
+//     { id: "p3", src: p3 },
+//     { id: "p4", src: p4 },
+//     { id: "p5", src: p5 },
+//     { id: "p6", src: p6 },
+//     { id: "p7", src: p7 },
+// ]
 const performanceImgPositions = [
     {
         id: "p1",
@@ -128,4 +147,4 @@ const footerLinks = [
     { label: "Site Map", link: "#" },
 ];
 
-export { features, featureSequence, footerLinks, navLinks, noChangeParts, performanceImages, performanceImgPositions , useMacbookStore };
+export { features, featureSequence, footerLinks, navLinks, noChangeParts, performanceImages, performanceImgPositions , useMacbookStore  };
