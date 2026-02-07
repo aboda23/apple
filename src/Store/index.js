@@ -20,8 +20,9 @@ const useMacbookStore = create((set) => ({
     setColor: (color) => set({ color }),
     scale: 0.08,
     texture: video1,
+    setTexture: (texture) => set({ texture }),
     setScale: (scale) => set({ scale }),
-    reset: () => set({ color: "#2e2c2e", scale: 0.08 }),
+    reset: () => set({ color: "#2e2c2e", scale: 0.08 , texture: video1}),
 }));
 const noChangeParts = [
     "Object_84",
@@ -59,7 +60,20 @@ const performanceImages = [
     { id: "p5", src: p5 },
     { id: "p6", src: p6 },
     { id: "p7", src: p7 },
-]
+
+
+];
+
+// const performanceImages = [
+//     { id: "p1", src: p1 },
+//     { id: "p2", src: p2 },
+//     { id: "p3", src: p3 },
+//     { id: "p4", src: p4 },
+//     { id: "p5", src: p5 },
+//     { id: "p6", src: p6 },
+//     { id: "p7", src: p7 },
+// ]
+
 const performanceImgPositions = [
     {
         id: "p1",
