@@ -1,14 +1,20 @@
 import { create } from "zustand";
-// import p1 from "../assets/images/performance1.png";
-// import p2 from "../assets/images/performance2.png";
-// import p3 from "../assets/images/performance3.png";
-// import p4 from "../assets/images/performance4.png";
-// import p5 from "../assets/images/performance5.jpg";
-// import p6 from "../assets/images/performance6.png";
-// import p7 from "../assets/images/performance7.png";
+import p1 from "../assets/images/performance1.png";
+import p2 from "../assets/images/performance2.png";
+import p3 from "../assets/images/performance3.png";
+import p4 from "../assets/images/performance4.png";
+import p5 from "../assets/images/performance5.jpg";
+import p6 from "../assets/images/performance6.png";
+import p7 from "../assets/images/performance7.png";
 // import { create } from "zustand";
 import video1 from "../assets/videos/feature-1.mp4";
-const navLinks = [{ label: "Store" }, { label: "Mac" }, { label: "iPhone" }, { label: "Watch" }, { label: "Vision" }, { label: "AirPods" }];
+// import { href } from "react-router-dom";
+const navLinks = [{ label: "Store" },
+    { label: "Mac", href: "/" },
+    { label: "iPhone" ,href:"/Iphone"},
+    { label: "Watch" },
+    { label: "Vision" },
+    { label: "AirPods" }];
 const useMacbookStore = create((set) => ({
     color: "#2e2c2e",
     setColor: (color) => set({ color }),
@@ -35,26 +41,25 @@ const noChangeParts = [
     "Object_21",
     "Object_10",
 ];
+// const performanceImages = [
+//     { id: "p1", src: "/performance1.png" },
+//     { id: "p2", src: "/performance2.png" },
+//     { id: "p3", src: "/performance3.png" },
+//     { id: "p4", src: "/performance4.png" },
+//     { id: "p5", src: "/performance5.jpg" },
+//     { id: "p6", src: "/performance6.png" },
+//     { id: "p7", src: "/performance7.png" },
+// ];
 
 const performanceImages = [
-    { id: "p1", src: "/performance1.png" },
-    { id: "p2", src: "/performance2.png" },
-    { id: "p3", src: "/performance3.png" },
-    { id: "p4", src: "/performance4.png" },
-    { id: "p5", src: "/performance5.jpg" },
-    { id: "p6", src: "/performance6.png" },
-    { id: "p7", src: "/performance7.png" },
-];
-
-// const performanceImages = [
-//     { id: "p1", src: p1 },
-//     { id: "p2", src: p2 },
-//     { id: "p3", src: p3 },
-//     { id: "p4", src: p4 },
-//     { id: "p5", src: p5 },
-//     { id: "p6", src: p6 },
-//     { id: "p7", src: p7 },
-// ]
+    { id: "p1", src: p1 },
+    { id: "p2", src: p2 },
+    { id: "p3", src: p3 },
+    { id: "p4", src: p4 },
+    { id: "p5", src: p5 },
+    { id: "p6", src: p6 },
+    { id: "p7", src: p7 },
+]
 const performanceImgPositions = [
     {
         id: "p1",

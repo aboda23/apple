@@ -11,6 +11,7 @@ import Wishlist from "../pages/WishList";
 import Cart from "../pages/Cart";
 import Dashboard from "../pages/Admin/Dashboard";
 import NotFound from "../pages/NotFound"; 
+// import Iphone from "../pages/Iphone";
 
 import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";

@@ -2,6 +2,7 @@ import logo from "../assets/images/logo.svg";
 import cart from "../assets/images/cart.svg";
 import search from "../assets/images/search.svg";
 import { navLinks } from "../Store/index";
+import { Link } from "react-router-dom";
 const Navbar = () => {
     return (
         <header>
@@ -9,9 +10,13 @@ const Navbar = () => {
                 <img src={logo} alt="Apple logo" />
 
                 <ul>
-                    {navLinks.map(({ label }) => (
+                    {navLinks.map(({ label, href }) => (
                         <li key={label}>
-                            <a href={label}>{label}</a>
+                            <Link
+                                to={href} // هنا هو الـ route path الصح
+                                className="text-white hover:text-blue-500 transition">
+                                {label}
+                            </Link>
                         </li>
                     ))}
                 </ul>
