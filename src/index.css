@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tailwindcss";
 
+nav {
+  @apply w-screen h-fit px-8;
+}
+
 @font-face {
   font-family: "Regular";
   src: url("/fonts/regular.otf");

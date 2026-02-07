@@ -10,9 +10,6 @@ import RegisterLoader from "../components/ui/RegisterLoader";
 const RegisterPage = () => {
     ///!loader state
     
-
-
-
     const navigate = useNavigate();
     const initialValues = {
         firstName: "",
