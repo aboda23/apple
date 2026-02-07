@@ -14,7 +14,7 @@ const ProductViewer = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     return (
         <section id="product-viewer">
-            <h2>Take a closer look.</h2>{" "}
+            <h2 className="flex items-center justify-center">Take a closer look.</h2>{" "}
             <div className="controls">
                 <p className="info">
                     Macbook pro available in 14" & 16" in space gray and dark colors{" "}
