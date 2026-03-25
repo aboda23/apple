@@ -1,4 +1,3 @@
-
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "../pages/Home";
@@ -10,11 +9,12 @@ import ModelDetails from "../pages/ModelDetails";
 import Wishlist from "../pages/WishList";
 import Cart from "../pages/Cart";
 import Dashboard from "../pages/Admin/Dashboard";
-import NotFound from "../pages/NotFound"; 
+import NotFound from "../pages/NotFound";
 // import Iphone from "../pages/Iphone";
 
 import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";
+import Iphone from "../iphone/Iphone.jsx";
 
 export default function AppRouter() {
     return (
@@ -26,6 +26,7 @@ export default function AppRouter() {
             <Route path="/models/:id" element={<ModelDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/iphone" element={<Iphone />} />
 
             {/* User Protected Routes Group */}
             <Route element={<ProtectedRoute />}>

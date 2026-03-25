@@ -318,7 +318,11 @@ body {
         @apply flex flex-col justify-between gap-5 -translate-y-5;
 
         div:first-of-type {
+<<<<<<< HEAD
           @apply h-full bg-[url('./assets/images/highlight-bg.png')] bg-no-repeat bg-cover p-10 2xl:pt-32 lg:pt-20 rounded-3xl;
+=======
+          @apply h-full bg-[url(./assets/images/highlight-bg.png)] bg-no-repeat bg-cover p-10 2xl:pt-32 lg:pt-20 rounded-3xl;
+>>>>>>> 4a42cf9 (iphone)
 
           p {
             @apply font-semibold text-4xl max-w-2xs;

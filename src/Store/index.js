@@ -11,7 +11,7 @@ import video1 from "../assets/videos/feature-1.mp4";
 // import { href } from "react-router-dom";
 const navLinks = [{ label: "Store" },
     { label: "Mac", href: "/" },
-    { label: "iPhone" ,href:"/Iphone"},
+    { label: "iPhone" , href:"/Iphone"},
     { label: "Watch" },
     { label: "Vision" },
     { label: "AirPods" }];
