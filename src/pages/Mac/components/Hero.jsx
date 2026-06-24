@@ -1,5 +1,5 @@
-import lap from "../assets/videos/hero.mp4";
-import title from "../assets/images/title.png";
+import lap from "../../../assets/videos/hero.mp4";
+import title from "../../../assets/images/title.png";
 const Hero = () => {
     // const videoRef = useRef();
     // useEffect(() => {

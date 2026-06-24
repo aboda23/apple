@@ -9,12 +9,34 @@ import p7 from "../assets/images/performance7.png";
 // import { create } from "zustand";
 import video1 from "../assets/videos/feature-1.mp4";
 // import { href } from "react-router-dom";
-const navLinks = [{ label: "Store" },
-    { label: "Mac", href: "/" },
-    { label: "iPhone" , href:"/Iphone"},
-    { label: "Watch" },
-    { label: "Vision" },
-    { label: "AirPods" }];
+const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Store", href: "/store" },
+    { label: "Mac", href: "/mac" },
+    { label: "iPhone", href: "/iphone" },
+    { label: "Watch", href: "/watch" },
+    { label: "Vision", href: "/vision" },
+    { label: "AirPods", href: "/airpods" }
+];
+
+const useCartStore = create((set) => ({
+    cartItems: [],
+    addToCart: (product) => set((state) => {
+        const existingItem = state.cartItems.find(item => item.id === product.id);
+        if (existingItem) {
+            return {
+                cartItems: state.cartItems.map(item =>
+                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                )
+            };
+        }
+        return { cartItems: [...state.cartItems, { ...product, quantity: 1 }] };
+    }),
+    removeFromCart: (productId) => set((state) => ({
+        cartItems: state.cartItems.filter(item => item.id !== productId)
+    })),
+    clearCart: () => set({ cartItems: [] })
+}));
 const useMacbookStore = create((set) => ({
     color: "#2e2c2e",
     setColor: (color) => set({ color }),
@@ -166,4 +188,4 @@ const footerLinks = [
     { label: "Site Map", link: "#" },
 ];
 
-export { features, featureSequence, footerLinks, navLinks, noChangeParts, performanceImages, performanceImgPositions , useMacbookStore  };
+export { features, featureSequence, footerLinks, navLinks, noChangeParts, performanceImages, performanceImgPositions , useMacbookStore, useCartStore };

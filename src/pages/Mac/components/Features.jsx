@@ -1,18 +1,18 @@
 import { Canvas } from '@react-three/fiber'
 import React, { Suspense, useEffect, useRef } from 'react'
-import StudioLights from './three/StudioLights'
-import { features, featureSequence, useMacbookStore } from '../Store'
+import StudioLights from '../../../components/three/StudioLights'
+import { features, featureSequence, useMacbookStore } from '../../../Store'
 import clsx from 'clsx'
-import MacbookModel from './models/Macbook'
+import MacbookModel from '../../../components/models/Macbook'
 import { useMediaQuery } from 'react-responsive'
 import { Html } from '@react-three/drei'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import video1 from "../assets/videos/feature-1.mp4"
-import video2 from "../assets/videos/feature-2.mp4"
-import video3 from "../assets/videos/feature-3.mp4"
-import video4 from "../assets/videos/feature-4.mp4"
-import video5 from "../assets/videos/feature-5.mp4"
+import video1 from "../../../assets/videos/feature-1.mp4"
+import video2 from "../../../assets/videos/feature-2.mp4"
+import video3 from "../../../assets/videos/feature-3.mp4"
+import video4 from "../../../assets/videos/feature-4.mp4"
+import video5 from "../../../assets/videos/feature-5.mp4"
 
 
 const ModelScroll = () => {
@@ -40,11 +40,10 @@ const ModelScroll = () => {
     // 3D model rotation animation
     const modelTimeline = gsap.timeline({
       scrollTrigger: {
-        trigger: '#f-canvas',
-        start: "top top",
-        end: "bottom top",
+        trigger: '#features',
+        start: "top center",
+        end: "bottom center",
         scrub: 1,
-        pin: true
       }
     })
 

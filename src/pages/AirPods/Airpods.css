@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+body {
+  background-color: #000;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero-gradient {
+  background: radial-gradient(circle at center, rgba(30, 30, 30, 0.8) 0%, #000000 70%);
+}
+
+.airpods-hero-text {
+  background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.airpods-gradient-text {
+  background: linear-gradient(90deg, #ff7171 0%, #ffc071 50%, #ffe57f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Bento Box */
+.bento-card {
+  @apply relative overflow-hidden rounded-3xl p-8 bg-[#111111] border border-[#222222] transition-transform duration-500 hover:scale-[1.02];
+}
+
+.bento-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.chip-glow {
+  box-shadow: 0 0 50px rgba(255, 150, 50, 0.2);
+}

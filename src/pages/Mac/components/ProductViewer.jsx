@@ -3,11 +3,11 @@ import { Canvas } from "@react-three/fiber";
 // import {useMacbookStore} from "../Store/index.js";
 
 import { Box, OrbitControls } from "@react-three/drei";
-import MacbookModel14 from "./models/Macbook-14.jsx";
-import StudioLights from "./three/StudioLights.jsx";
-import ModelSwitcher from "./three/ModelSwitcher.jsx";
+import MacbookModel14 from "../../../components/models/Macbook-14.jsx";
+import StudioLights from "../../../components/three/StudioLights.jsx";
+import ModelSwitcher from "../../../components/three/ModelSwitcher.jsx";
 import { useMediaQuery } from "react-responsive";
-import { useMacbookStore } from "../Store/index.js";
+import { useMacbookStore } from "../../../Store/index.js";
 
 const ProductViewer = () => {
     const { color, setColor, scale, setScale } = useMacbookStore();

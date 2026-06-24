@@ -10,37 +10,51 @@ import Wishlist from "../pages/WishList";
 import Cart from "../pages/Cart";
 import Dashboard from "../pages/Admin/Dashboard";
 import NotFound from "../pages/NotFound";
-// import Iphone from "../pages/Iphone";
 
 import ProtectedRoute from "./ProtectedRoute";
 import AdminRoute from "./AdminRoute";
-import Iphone from "../iphone/Iphone.jsx";
+import MainLayout from "../layout/MainLayout";
+
+import Mac from "../pages/Mac/Mac";
+import Store from "../pages/Store/Store";
+import Iphone from "../pages/Iphone/Iphone";
+import Watch from "../pages/Watch/Watch";
+import Airpods from "../pages/AirPods/Airpods";
+import Vision from "../pages/Vision/Vision";
 
 export default function AppRouter() {
     return (
         <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/models" element={<Models />} />
-            <Route path="/models/:id" element={<ModelDetails />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/iphone" element={<Iphone />} />
+            <Route element={<MainLayout />}>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/store" element={<Store />} />
+                <Route path="/mac" element={<Mac />} />
+                <Route path="/iphone" element={<Iphone />} />
+                <Route path="/watch" element={<Watch />} />
+                <Route path="/airpods" element={<Airpods />} />
+                <Route path="/vision" element={<Vision />} />
+                
+                <Route path="/about" element={<About />} />
+                <Route path="/models" element={<Models />} />
+                <Route path="/models/:id" element={<ModelDetails />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-            {/* User Protected Routes Group */}
-            <Route element={<ProtectedRoute />}>
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/cart" element={<Cart />} />
+                {/* User Protected Routes Group */}
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/cart" element={<Cart />} />
+                </Route>
+                
+                {/* Not Found */}
+                <Route path="*" element={<NotFound />} />
             </Route>
 
-            {/* Admin Protected Routes Group */}
+            {/* Admin Protected Routes Group (Might have different layout) */}
             <Route element={<AdminRoute />}>
                 <Route path="/admin/dashboard" element={<Dashboard />} />
             </Route>
-
-            {/* Not Found */}
-            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }

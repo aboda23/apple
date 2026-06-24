@@ -1,6 +1,6 @@
 import React from 'react'
-import game from '../assets/videos/game.mp4'
-import logo from '../assets/images/mask-logo.svg'
+import game from '../../../assets/videos/game.mp4'
+import logo from '../../../assets/images/mask-logo.svg'
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useMediaQuery } from "react-responsive";
