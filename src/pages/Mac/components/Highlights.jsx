@@ -1,27 +1,23 @@
-import React from 'react'
-import laptob from '../../../assets/images/laptop.png'
-import sun from '../../../assets/images/sun.png'
-import ai from '../../../assets/images/ai.png'
-import battery from '../../../assets/images/battery.png'
-import { useMediaQuery } from 'react-responsive'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-
+import {useMediaQuery} from "react-responsive";
+import {useGSAP} from "@gsap/react";
+import gsap from "gsap";
 
 const Highlights = () => {
-    const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+    const isMobile = useMediaQuery({  query: '(max-width: 1024px)' });
+
     useGSAP(() => {
-        gsap.from([".left-column ", ".right-column "], {
-            y: isMobile ? 30 : 80,
-            opacity: 0,
-            stagger: 0.15,
-            duration: 1,
+        gsap.to(['.left-column', '.right-column'], {
             scrollTrigger: {
-                trigger: "#highlights",
-                start: "top 80%",
+                trigger: '#highlights',
+                start: isMobile ? 'bottom bottom' : 'top center'
             },
+            y: 0,
+            opacity: 1,
+            stagger: 0.5,
+            duration: 1,
+            ease: 'power1.inOut'
         });
-    }, [isMobile]);
+    })
 
     return (
         <section id="highlights">
@@ -31,38 +27,35 @@ const Highlights = () => {
             <div className="masonry">
                 <div className="left-column">
                     <div>
-                        <img src={laptob} alt="Laptop" />
+                        <img src="/mac/laptop.png" alt="Laptop" />
                         <p>Fly through demanding tasks up to 9.8x faster.</p>
                     </div>
                     <div>
-                        <img src={sun} alt="Sun" />
-                        <p>
-                            A stunning <br />
-                            Liquid Retina XDR <br />
-                            display.
-                        </p>
+                        <img src="/mac/sun.png" alt="Sun" />
+                        <p>A stunning <br />
+                            Liquid Retina XDR <br/>
+                            display.</p>
                     </div>
                 </div>
                 <div className="right-column">
                     <div className="apple-gradient">
-                        <img src={ai} alt="AI" />
-                        <p>
-                            Built for <br />
-                            <span>Apple Intelligence.</span>
-                        </p>
+                        <img src="/mac/ai.png" alt="AI" />
+                        <p>Built for <br />
+                            <span>Apple Intelligence.</span></p>
                     </div>
                     <div>
-                        <img src={battery} alt="Battery" />
-                        <p>
-                            Up to
-                <span className="green-gradient"> { ' '}14 more hours{" "} </span>
+                        <img src="/mac/battery.png" alt="Battery" />
+                        <p>Up to
+                            <span className="green-gradient">{' '}14 more hours{' '}</span>
                             battery life.
-                <span className="text-dark-100"> {' '}(Up to 24 hours total.){ ''}</span>
-                        </p>
+                            <span className="text-dark-100">{' '}(Up to 24 hours total.)
+                            </span></p>
                     </div>
                 </div>
             </div>
         </section>
-    );
-};
-export default Highlights;
+    )
+}
+export default Highlights
+
+
