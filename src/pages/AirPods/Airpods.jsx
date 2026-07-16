@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Airpods.css';
 
@@ -13,21 +13,27 @@ import Footer         from '../../components/Footer';
 
 import { airpodsVideos } from './utils';
 
-/* ── page-level fade variant ── */
 const pageFade = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.38 } },
-  exit:   { opacity: 0, transition: { duration: 0.25 } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  exit:   { opacity: 0, y: -20, transition: { duration: 0.3 } },
 };
 
 export default function Airpods() {
   const [activeTab, setActiveTab] = useState('pro');
 
-  return (
-    <main className="bg-black text-white w-full overflow-hidden">
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeTab]);
 
-      {/* ── 1. HERO (original video – untouched) ── */}
-      <VideoHero videoSrc={airpodsVideos.sec} title="AirPods Pro" />
+  return (
+    <main className="bg-black text-white w-full overflow-hidden font-sans selection:bg-[#2997ff] selection:text-white">
+      
+      {/* ── 1. HERO ── */}
+      <VideoHero 
+        videoSrc={activeTab === 'pro' ? airpodsVideos.sec : airpodsVideos.max} 
+        title={activeTab === 'pro' ? "AirPods Pro" : "AirPods Max"} 
+      />
 
       {/* ── 2. STICKY TAB SWITCHER ── */}
       <nav className="airpods-tabs">
@@ -50,14 +56,13 @@ export default function Airpods() {
                     : ''
                 }`}
               >
-                {/* Framer Motion spring sliding pill */}
                 {isActive && (
                   <motion.div
                     layoutId="activeAirpodsTab"
                     className={`airpods-tabs__pill ${
                       id === 'pro' ? 'airpods-tabs__pill--pro' : 'airpods-tabs__pill--max'
                     }`}
-                    transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
                 <span style={{ position: 'relative', zIndex: 2 }}>{label}</span>
@@ -69,48 +74,24 @@ export default function Airpods() {
 
       {/* ── 3. CONTENT SECTIONS ── */}
       <AnimatePresence mode="wait">
-
         {activeTab === 'pro' && (
-          <motion.div
-            key="pro"
-            variants={pageFade}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            {/* Highlights carousel – GSAP driven */}
+          <motion.div key="pro" variants={pageFade} initial="hidden" animate="visible" exit="exit">
             <AirPodsHighlights />
-
-            {/* Design / explore block – GSAP driven */}
             <AirPodsDesign />
-
-            {/* H2 chip / sensor tech */}
             <AirPodsTech />
-
-            {/* ANC simulator + Heart Rate + Battery – Framer Motion + GSAP */}
             <AirPodsProSection />
           </motion.div>
         )}
 
         {activeTab === 'max' && (
-          <motion.div
-            key="max"
-            variants={pageFade}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            {/* Full AirPods Max premium showcase */}
+          <motion.div key="max" variants={pageFade} initial="hidden" animate="visible" exit="exit">
             <AirPodsMaxSection />
           </motion.div>
         )}
-
       </AnimatePresence>
 
-      {/* ── 4. COMPARISON TABLE (always visible) ── */}
-      <section className="border-t border-zinc-900">
-        <CompareModels />
-      </section>
+      {/* ── 4. COMPARISON TABLE ── */}
+      <CompareModels />
 
       <Footer />
     </main>

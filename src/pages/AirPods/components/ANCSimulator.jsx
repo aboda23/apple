@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import bgImage from "../../../assets/airpods/IMG_0276.JPG";
 
 const NUM_BARS = 40;
 
@@ -13,9 +14,12 @@ const ANCSimulator = () => {
   const [ancOn, setAncOn] = useState(false);
 
   return (
-    <div className="anc-widget w-full max-w-3xl mx-auto px-8 py-14 flex flex-col items-center gap-10">
+    <div className="anc-widget w-full max-w-3xl mx-auto px-16 pt-20 pb-20 min-h-[600px] flex flex-col justify-between items-center gap-10 relative overflow-hidden">
+      {/* Background Image */}
+      <img src={bgImage} alt="" className="absolute inset-0 w-full h-full object-cover z-0 opacity-40 mix-blend-lighten" />
+
       {/* Ambient glow */}
-      <div className={`anc-glow ${ancOn ? "anc-glow--active" : ""}`} />
+      <div className={`anc-glow relative z-10 ${ancOn ? "anc-glow--active" : ""}`} />
 
       {/* Label */}
       <div className="relative z-10 text-center">
@@ -24,7 +28,7 @@ const ANCSimulator = () => {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="block text-xs font-bold tracking-widest uppercase mb-2"
+          className="block text-sm font-bold tracking-widest uppercase mb-4"
           style={{ color: ancOn ? "#32d74b" : "#2997ff" }}
         >
           {ancOn ? "Active Noise Cancellation ON" : "Transparency Mode"}
@@ -34,11 +38,11 @@ const ANCSimulator = () => {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl font-bold text-white"
+          className="text-4xl md:text-5xl font-bold text-white mb-4"
         >
           {ancOn ? "Pure. Silence." : "Hear the world."}
         </motion.h3>
-        <p className="text-gray-500 mt-2 text-sm max-w-xs mx-auto">
+        <p className="text-gray-300 mt-4 text-base md:text-lg max-w-sm mx-auto leading-relaxed">
           {ancOn
             ? "Industry-leading noise cancellation blocks out the world so you can focus."
             : "Transparency mode lets in the sounds that matter most."}
@@ -71,7 +75,7 @@ const ANCSimulator = () => {
       <motion.button
         whileTap={{ scale: 0.95 }}
         onClick={() => setAncOn((v) => !v)}
-        className="relative z-10 px-10 py-4 rounded-full font-semibold text-sm transition-all"
+        className="relative z-10 px-12 py-5 rounded-full font-bold text-base md:text-lg transition-all w-full max-w-[280px]"
         style={{
           background: ancOn
             ? "linear-gradient(135deg,#32d74b,#00a832)"

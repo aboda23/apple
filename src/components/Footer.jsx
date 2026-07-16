@@ -4,8 +4,8 @@ import { footerLinks } from '../Store';
 
 const Footer = () => {
   return (
-    <footer className="bg-black pt-16 pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/[0.05]">
-      <div className="max-w-4xl mx-auto flex flex-col items-center text-center gap-8">
+    <footer className="bg-black w-full pt-16 pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/[0.05] flex justify-center">
+      <div className="max-w-4xl w-full mx-auto flex flex-col items-center text-center gap-8">
         
         {/* Logo */}
         <img src={logo} alt="Apple logo" className="w-8 h-8 opacity-80" />

@@ -1,90 +1,132 @@
-import React, { useRef } from 'react'
-import { airpodsVideos } from '../utils'
-import { useGSAP } from '@gsap/react'
+import React, { useRef, useState, useEffect } from 'react';
+import { airpodsVideos } from '../utils';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { animateWithGsap } from '../../Iphone/utils/animations';
+import { ScrollTrigger } from 'gsap/all';
 import { TbCpu } from "react-icons/tb";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const AirPodsTech = () => {
+  const containerRef = useRef();
   const videoRef = useRef();
+  const [count, setCount] = useState(0);
 
   useGSAP(() => {
-    gsap.from('#airpods-chip', {
-      scrollTrigger: {
-        trigger: '#airpods-chip',
-        start: '20% bottom'
-      },
-      opacity: 0,
-      scale: 2,
-      duration: 2,
-      ease: 'power2.inOut'
-    })
+    // Chip zoom in
+    gsap.fromTo('#airpods-chip-icon', 
+      { opacity: 0, scale: 2, rotation: 45 },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        rotation: 0,
+        duration: 1.5,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#airpods-chip-icon',
+          start: 'top 80%'
+        }
+      }
+    );
 
-    animateWithGsap('.g_fadeIn', {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: 'power2.inOut'
-    })
-  }, []);
+    // Number counter animation (9 Billion)
+    ScrollTrigger.create({
+      trigger: '.tech-counter',
+      start: 'top 80%',
+      onEnter: () => {
+        gsap.to({ val: 0 }, {
+          val: 9,
+          duration: 2,
+          ease: "power2.out",
+          onUpdate: function() {
+            setCount(Math.floor(this.targets()[0].val));
+          }
+        });
+      }
+    });
+
+    gsap.fromTo('.g_fadeIn_tech', 
+      { opacity: 0, y: 40 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1, 
+        stagger: 0.15, 
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.tech-text-container',
+          start: 'top 85%'
+        }
+      }
+    );
+  }, { scope: containerRef });
 
   return (
-    <section className="common-padding bg-black text-white w-full">
-      <div className="screen-max-width mx-auto px-5 md:px-10">
-        <div id="airpods-chip" className="flex-center w-full my-20">
-          <TbCpu className="text-8xl text-white" />
+    <section ref={containerRef} className="airpods-sect bg-black text-white w-full relative">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#a0a0a0] opacity-5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="airpods-wrap text-center relative z-10">
+        
+        {/* Chip Icon */}
+        <div id="airpods-chip-icon" className="inline-flex justify-center items-center w-32 h-32 rounded-3xl bg-gradient-to-br from-gray-800 to-black border border-gray-700 shadow-2xl mb-12">
+          <TbCpu className="text-7xl text-white" />
         </div>
 
-        <div className="flex flex-col items-center text-center">
-          <h2 className="text-4xl md:text-7xl font-semibold mb-4">
-            H2 chip.
-            <br /> A monster win for audio.
-          </h2>
+        <h2 className="text-5xl md:text-8xl font-bold mb-6 tracking-tight">
+          <span className="airpods-gradient-pro">H2 chip.</span>
+          <br /> 
+          <span className="text-gray-400">A monster win for audio.</span>
+        </h2>
 
-          <p className="text-gray-400 text-xl md:text-2xl font-medium max-w-2xl">
-            It's here. The biggest redesign in the history of Apple acoustics.
-          </p>
-        </div>
+        <p className="text-gray-400 text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-20">
+          It's here. The biggest redesign in the history of Apple acoustics.
+        </p>
 
-        <div className="mt-10 md:mt-20 mb-14">
-          <div className="relative h-full flex-center">
-            <div className="hiw-video rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.1)] w-full max-w-4xl mx-auto flex justify-center items-center">
-                <video className="pointer-events-none w-full object-cover" playsInline preload="none" muted autoPlay loop ref={videoRef}>
-                  <source src={airpodsVideos.sensor} type="video/webm" />
-                </video>
-            </div>
+        {/* Video Block */}
+        <div className="relative w-full max-w-5xl mx-auto rounded-[40px] overflow-hidden glass-panel border border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.05)] aspect-[21/9] bg-black flex justify-center items-center">
+          <video 
+            className="w-full h-full object-contain opacity-80" 
+            playsInline 
+            muted 
+            autoPlay 
+            loop 
+            ref={videoRef}
+          >
+            <source src={airpodsVideos.sensor} type="video/webm" />
+          </video>
+          
+          {/* Overlay Stats */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-10 text-left pointer-events-none">
+             <div className="tech-counter">
+               <span className="text-6xl md:text-8xl font-black text-white">{count}</span>
+               <span className="text-3xl md:text-5xl font-bold text-gray-400"> Billion</span>
+             </div>
+             <p className="text-sm md:text-base font-semibold tracking-widest uppercase text-gray-400 mt-2">Operations per second</p>
           </div>
-          <p className="text-gray-500 font-semibold text-center mt-6">Heart Rate Sensor & Advanced Tracking</p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-10 justify-between items-start mt-16 max-w-4xl mx-auto">
-          <div className="flex flex-1 justify-center flex-col gap-5">
-            <p className="hiw-text g_fadeIn text-gray-400 text-lg md:text-xl font-medium">
-              H2 is an entirely new class of headphone chip that delivers our {' '}
-              <span className="text-white">
-                best audio performance by far
-              </span>.
+        {/* Text descriptions */}
+        <div className="tech-text-container grid grid-cols-1 md:grid-cols-3 gap-12 mt-24 text-left">
+          <div className="col-span-1 md:col-span-2 flex flex-col gap-8">
+            <p className="g_fadeIn_tech text-gray-400 text-xl md:text-2xl font-medium leading-relaxed">
+              H2 is an entirely new class of headphone chip that delivers our <span className="text-white font-semibold">best audio performance by far</span>.
             </p>
-
-            <p className="hiw-text g_fadeIn text-gray-400 text-lg md:text-xl font-medium">
-              Music and movies {' '}
-              <span className="text-white">
-                will sound and feel so immersive
-              </span>,
-                with incredibly detailed environments and perfectly separated frequencies.
+            <p className="g_fadeIn_tech text-gray-400 text-xl md:text-2xl font-medium leading-relaxed">
+              Music and movies <span className="text-white font-semibold">will sound and feel so immersive</span>, with incredibly detailed environments and perfectly separated frequencies.
             </p>
           </div>
           
-
-          <div className="flex-1 flex justify-center flex-col g_fadeIn">
-            <p className="text-gray-400 text-lg font-semibold">New</p>
-            <p className="text-white text-3xl md:text-5xl font-bold my-2">Pro-class Audio</p>
-            <p className="text-gray-400 text-lg font-semibold">with Custom Amplifier</p>
+          <div className="col-span-1 flex flex-col justify-center g_fadeIn_tech p-8 rounded-3xl glass-panel">
+            <p className="text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">New</p>
+            <p className="text-white text-3xl md:text-4xl font-bold mb-2">Pro-class Audio</p>
+            <p className="text-gray-400 text-lg">with Custom Amplifier</p>
           </div>
         </div>
+
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default AirPodsTech
+export default AirPodsTech;
