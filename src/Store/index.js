@@ -22,18 +22,32 @@ const navLinks = [
 const useCartStore = create((set) => ({
     cartItems: [],
     addToCart: (product) => set((state) => {
-        const existingItem = state.cartItems.find(item => item.id === product.id);
+        // Group by product id AND selected variants
+        const existingItem = state.cartItems.find(item => 
+            item.id === product.id && 
+            item.selectedStorage === product.selectedStorage && 
+            item.selectedSize === product.selectedSize && 
+            item.selectedColor?.name === product.selectedColor?.name
+        );
         if (existingItem) {
             return {
                 cartItems: state.cartItems.map(item =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    item.cartItemId === existingItem.cartItemId 
+                        ? { ...item, quantity: item.quantity + (product.quantity || 1) } 
+                        : item
                 )
             };
         }
-        return { cartItems: [...state.cartItems, { ...product, quantity: 1 }] };
+        return { cartItems: [...state.cartItems, { ...product, quantity: product.quantity || 1 }] };
     }),
-    removeFromCart: (productId) => set((state) => ({
-        cartItems: state.cartItems.filter(item => item.id !== productId)
+    updateCartItem: (cartItemId, updates) => set((state) => ({
+        cartItems: state.cartItems.map(item => 
+            item.cartItemId === cartItemId ? { ...item, ...updates } : item
+        )
+    })),
+    removeFromCart: (cartItemId) => set((state) => ({
+        // Using cartItemId for precise removal
+        cartItems: state.cartItems.filter(item => item.cartItemId !== cartItemId)
     })),
     clearCart: () => set({ cartItems: [] })
 }));
