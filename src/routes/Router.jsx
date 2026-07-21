@@ -34,6 +34,13 @@ export default function AppRouter() {
                 <Route path="/watch" element={<Watch />} />
                 <Route path="/airpods" element={<Airpods />} />
                 <Route path="/vision" element={<Vision />} />
+
+
+
+
+                <Route path="/admin/dashboard" element={<Dashboard />} />
+                <Route path="/cart" element={<Cart />} />
+                    
                 
                 <Route path="/about" element={<About />} />
                 <Route path="/models" element={<Models />} />
@@ -44,7 +51,7 @@ export default function AppRouter() {
                 {/* User Protected Routes Group */}
                 <Route element={<ProtectedRoute />}>
                     <Route path="/wishlist" element={<Wishlist />} />
-                    <Route path="/cart" element={<Cart />} />
+                    {/* <Route path="/cart" element={<Cart />} /> */}
                 </Route>
                 
                 {/* Not Found */}
@@ -52,9 +59,9 @@ export default function AppRouter() {
             </Route>
 
             {/* Admin Protected Routes Group (Might have different layout) */}
-            <Route element={<AdminRoute />}>
+            {/* <Route element={<AdminRoute />}>
                 <Route path="/admin/dashboard" element={<Dashboard />} />
-            </Route>
+            </Route> */}
         </Routes>
     );
 }
