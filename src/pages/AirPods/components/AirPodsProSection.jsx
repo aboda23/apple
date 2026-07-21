@@ -52,13 +52,13 @@ const AirPodsProSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] to-black -z-10" />
         <div className="airpods-wrap">
           <div className="text-center mb-16 flex flex-col items-center">
-            <span className="block text-xs font-bold tracking-widest uppercase mb-4 text-[#32d74b]">
+            <span className="block ap-label mb-4 text-[#32d74b]">
               Active Noise Cancellation
             </span>
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+            <h2 className="ap-section-title mb-6">
               The world goes quiet.
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed text-center">
+            <p className="ap-body text-gray-400 max-w-2xl mx-auto text-center">
               Up to 2× more noise cancellation than the previous generation. Toggle below to experience it.
             </p>
           </div>
@@ -72,33 +72,35 @@ const AirPodsProSection = () => {
       <section className="airpods-sect">
         <div className="airpods-wrap">
           <div className="airpods-grid-2">
-            <div className="flex flex-col gap-8">
-              <span className="text-xs font-bold tracking-widest uppercase text-[#ff375f]">
-                Health & Fitness
-              </span>
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight leading-none">
-                Track every beat.
-                <br />
-                <span className="text-gray-600">During every rep.</span>
-              </h2>
-              <p className="text-xl text-gray-400 leading-relaxed max-w-md">
-                256 invisible LED flashes per second combined with advanced accelerometers give you
-                highly accurate heart rate data during up to 50 different workout types.
-              </p>
+            <div className="flex flex-col gap-8 h-full justify-center">
+              <div>
+                <span className="ap-label text-[#ff375f] mb-4 block">
+                  Health & Fitness
+                </span>
+                <h2 className="ap-section-title mb-6">
+                  Track every beat.
+                  <br />
+                  <span className="text-gray-600">During every rep.</span>
+                </h2>
+                <p className="ap-body text-gray-400 max-w-md">
+                  256 invisible LED flashes per second combined with advanced accelerometers give you
+                  highly accurate heart rate data during up to 50 different workout types.
+                </p>
+              </div>
               
-              <div className="flex flex-col gap-6 mt-4">
-                <div className="p-8 rounded-[32px] glass-panel border border-[#ff375f]/30 shadow-[0_10px_30px_rgba(255,55,95,0.1)]">
-                  <h4 className="text-white font-bold text-xl mb-3">Hearing Aid Feature</h4>
-                  <p className="text-gray-400 text-base leading-relaxed">Clinical-grade hearing assistance, personalized via a 5-minute hearing test on your iPhone.</p>
+              <div className="grid grid-cols-1 gap-8 flex-grow">
+                <div className="px-10 py-10 md:px-12 md:py-12 rounded-[40px] glass-panel border border-[#ff375f]/30 shadow-[0_10px_30px_rgba(255,55,95,0.1)] flex flex-col justify-center h-full">
+                  <h4 className="ap-card-title text-white mb-4">Hearing Aid Feature</h4>
+                  <p className="ap-body text-gray-400">Clinical-grade hearing assistance, personalized via a 5-minute hearing test on your iPhone.</p>
                 </div>
-                <div className="p-8 rounded-[32px] glass-panel border border-[#32d74b]/30 shadow-[0_10px_30px_rgba(50,215,75,0.1)]">
-                  <h4 className="text-white font-bold text-xl mb-3">Conversation Awareness</h4>
-                  <p className="text-gray-400 text-base leading-relaxed">Automatically lowers media volume and enhances voices in front of you when you start speaking.</p>
+                <div className="px-10 py-10 md:px-12 md:py-12 rounded-[40px] glass-panel border border-[#32d74b]/30 shadow-[0_10px_30px_rgba(50,215,75,0.1)] flex flex-col justify-center h-full">
+                  <h4 className="ap-card-title text-white mb-4">Conversation Awareness</h4>
+                  <p className="ap-body text-gray-400">Automatically lowers media volume and enhances voices in front of you when you start speaking.</p>
                 </div>
               </div>
             </div>
 
-            <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(255,255,255,0.15)] aspect-square group max-w-md mx-auto w-full bg-[#1a1a1a]">
+            <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(255,255,255,0.15)] aspect-square group max-w-md mx-auto w-full bg-[#1a1a1a] self-stretch">
               <img
                 src={airpodsProImages[1]}
                 alt="AirPods Pro"
@@ -134,18 +136,20 @@ const AirPodsProSection = () => {
             </div>
 
             {/* Text Right */}
-            <div className="flex flex-col gap-8 order-1 md:order-2">
-              <span className="text-xs font-bold tracking-widest uppercase text-[#32d74b]">
-                Battery & Case
-              </span>
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight leading-none">
-                Power for days.
-                <br />
-                <span className="text-gray-600">USB‑C included.</span>
-              </h2>
-              <p className="text-xl text-gray-400 leading-relaxed max-w-md">
-                The MagSafe Charging Case has been rebuilt with a new U1 chip for Precision Finding, a built-in lanyard loop, and a speaker to help you locate it.
-              </p>
+            <div className="flex flex-col gap-8 h-full justify-center order-1 md:order-2">
+              <div>
+                <span className="ap-label text-[#32d74b] mb-4 block">
+                  Battery & Case
+                </span>
+                <h2 className="ap-section-title mb-6">
+                  Power for days.
+                  <br />
+                  <span className="text-gray-600">USB‑C included.</span>
+                </h2>
+                <p className="ap-body text-gray-400 max-w-md">
+                  The MagSafe Charging Case has been rebuilt with a new U1 chip for Precision Finding, a built-in lanyard loop, and a speaker to help you locate it.
+                </p>
+              </div>
               
               <div className="grid grid-cols-2 gap-4 mt-4">
                 <div className="p-6 rounded-3xl glass-panel text-center">

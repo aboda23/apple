@@ -8,6 +8,7 @@ import Models from "../pages/Models";
 import ModelDetails from "../pages/ModelDetails";
 import Wishlist from "../pages/WishList";
 import Cart from "../pages/Cart";
+import Checkout from "../pages/Checkout";
 import Dashboard from "../pages/Admin/Dashboard";
 import NotFound from "../pages/NotFound";
 
@@ -48,10 +49,12 @@ export default function AppRouter() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
 
+                <Route path="/wishlist" element={<Wishlist />} />
+
                 {/* User Protected Routes Group */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/wishlist" element={<Wishlist />} />
-                    {/* <Route path="/cart" element={<Cart />} /> */}
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
                 </Route>
                 
                 {/* Not Found */}

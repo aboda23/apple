@@ -111,7 +111,8 @@ body {
   height: 140px;
   width: 100%;
   max-width: 560px;
-  margin: 16px auto;
+  margin: 0 auto;
+  padding: 0 8px;
 }
 
 .anc-wave-bar {
@@ -214,36 +215,60 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ─── DESIGN TOKENS ─── */
+:root {
+  --ap-max-w: 1400px;
+  --ap-px-mobile: 24px;
+  --ap-px-tablet: 32px;
+  --ap-px-desktop: 48px;
+  
+  --ap-py-mobile: 72px;
+  --ap-py-tablet: 96px;
+  --ap-py-desktop: 120px;
+}
+
 /* ─── GENERAL SPACING & METRICS ─── */
 .airpods-sect {
-  padding: 120px 32px;
-}
-.airpods-sect--lg {
-  padding: 160px 32px;
+  padding: var(--ap-py-mobile) var(--ap-px-mobile);
+  width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
-  .airpods-sect { padding: 160px 80px; }
-  .airpods-sect--lg { padding: 200px 80px; }
+  .airpods-sect {
+    padding: var(--ap-py-tablet) var(--ap-px-tablet);
+  }
+}
+
+@media (min-width: 1280px) {
+  .airpods-sect {
+    padding: var(--ap-py-desktop) var(--ap-px-desktop);
+  }
 }
 
 .airpods-wrap {
   width: 100%;
-  max-width: 1100px;
+  max-width: var(--ap-max-w);
   margin: 0 auto;
-  padding: 0 16px;
 }
 
 .airpods-grid-2 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 48px;
+  align-items: center;
 }
+
 @media (min-width: 768px) {
   .airpods-grid-2 {
     grid-template-columns: 1fr 1fr;
-    gap: 96px;
-    align-items: center;
+    gap: 80px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .airpods-grid-2 {
+    gap: 120px;
   }
 }
 
@@ -253,3 +278,114 @@ body {
   background: radial-gradient(circle at 50% 50%, rgba(41, 151, 255, 0.04) 0%, transparent 70%);
   pointer-events: none;
 }
+
+/* ─── TYPOGRAPHY SCALE ─── */
+.ap-hero-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+  .ap-hero-title {
+    font-size: 64px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ap-hero-title {
+    font-size: clamp(80px, 6vw, 96px);
+  }
+}
+
+.ap-section-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .ap-section-title {
+    font-size: 40px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ap-section-title {
+    font-size: 56px;
+  }
+}
+
+.ap-card-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+  .ap-card-title {
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ap-card-title {
+    font-size: 32px;
+  }
+}
+
+.ap-body {
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+@media (min-width: 1280px) {
+  .ap-body {
+    font-size: 20px;
+  }
+}
+
+.ap-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── BUTTON SYSTEM ─── */
+.ap-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 32px;
+  border-radius: 980px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  white-space: nowrap;
+  border: none;
+  outline: none;
+}
+
+.ap-btn:focus-visible {
+  outline: 2px solid #2997ff;
+  outline-offset: 2px;
+}
+
+.ap-btn--white {
+  background: #fff;
+  color: #000;
+}
+.ap-btn--white:hover { background: #e8e8e8; }
+
+.ap-btn--blue {
+  background: #2997ff;
+  color: #fff;
+}
+.ap-btn--blue:hover { background: #0077ED; }

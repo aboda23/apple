@@ -83,45 +83,51 @@ const AirPodsTech = () => {
           It's here. The biggest redesign in the history of Apple acoustics.
         </p>
 
-        {/* Video Block */}
-        <div className="relative w-full max-w-5xl mx-auto rounded-[40px] overflow-hidden glass-panel border border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.05)] aspect-[21/9] bg-black flex justify-center items-center">
-          <video 
-            className="w-full h-full object-contain opacity-80" 
-            playsInline 
-            muted 
-            autoPlay 
-            loop 
-            ref={videoRef}
-          >
-            <source src={airpodsVideos.sensor} type="video/webm" />
-          </video>
-          
-          {/* Overlay Stats */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-10 text-left pointer-events-none">
-             <div className="tech-counter">
-               <span className="text-6xl md:text-8xl font-black text-white">{count}</span>
-               <span className="text-3xl md:text-5xl font-bold text-gray-400"> Billion</span>
-             </div>
-             <p className="text-sm md:text-base font-semibold tracking-widest uppercase text-gray-400 mt-2">Operations per second</p>
+        {/* Statistics & Feature Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl mx-auto mb-16">
+          {/* Left Statistics Card (Video) */}
+          <div className="col-span-1 md:col-span-2 relative rounded-[40px] overflow-hidden glass-panel border border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.05)] bg-black flex flex-col min-h-[400px]">
+            <video 
+              className="absolute inset-0 w-full h-full object-contain opacity-80" 
+              playsInline 
+              muted 
+              autoPlay 
+              loop 
+              ref={videoRef}
+            >
+              <source src={airpodsVideos.sensor} type="video/webm" />
+            </video>
+            
+            {/* Overlay Stats */}
+            <div className="relative z-10 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-8 md:p-12 text-left pointer-events-none flex-grow">
+               <div className="mt-auto">
+                 <div className="tech-counter mb-2">
+                   <span className="text-6xl md:text-8xl font-black text-white leading-none">{count}</span>
+                   <span className="text-3xl md:text-5xl font-bold text-gray-400"> Billion</span>
+                 </div>
+                 <p className="ap-label text-gray-400">Operations per second</p>
+               </div>
+            </div>
+          </div>
+
+          {/* Right Feature Card */}
+          <div className="col-span-1 flex flex-col justify-end g_fadeIn_tech p-8 md:p-12 rounded-[40px] glass-panel border border-white/10 min-h-[400px] text-left">
+            <div className="mt-auto">
+              <p className="ap-label text-gray-400 mb-4">New</p>
+              <p className="ap-card-title text-white mb-2">Pro-class Audio</p>
+              <p className="ap-body text-gray-400">with Custom Amplifier</p>
+            </div>
           </div>
         </div>
 
         {/* Text descriptions */}
-        <div className="tech-text-container grid grid-cols-1 md:grid-cols-3 gap-12 mt-24 text-left">
-          <div className="col-span-1 md:col-span-2 flex flex-col gap-8">
-            <p className="g_fadeIn_tech text-gray-400 text-xl md:text-2xl font-medium leading-relaxed">
-              H2 is an entirely new class of headphone chip that delivers our <span className="text-white font-semibold">best audio performance by far</span>.
-            </p>
-            <p className="g_fadeIn_tech text-gray-400 text-xl md:text-2xl font-medium leading-relaxed">
-              Music and movies <span className="text-white font-semibold">will sound and feel so immersive</span>, with incredibly detailed environments and perfectly separated frequencies.
-            </p>
-          </div>
-          
-          <div className="col-span-1 flex flex-col justify-center g_fadeIn_tech p-8 rounded-3xl glass-panel">
-            <p className="text-gray-400 text-sm font-bold tracking-widest uppercase mb-2">New</p>
-            <p className="text-white text-3xl md:text-4xl font-bold mb-2">Pro-class Audio</p>
-            <p className="text-gray-400 text-lg">with Custom Amplifier</p>
-          </div>
+        <div className="tech-text-container grid grid-cols-1 md:grid-cols-2 gap-8 text-left w-full max-w-5xl mx-auto">
+          <p className="g_fadeIn_tech ap-body text-gray-400">
+            H2 is an entirely new class of headphone chip that delivers our <span className="text-white font-semibold">best audio performance by far</span>.
+          </p>
+          <p className="g_fadeIn_tech ap-body text-gray-400">
+            Music and movies <span className="text-white font-semibold">will sound and feel so immersive</span>, with incredibly detailed environments and perfectly separated frequencies.
+          </p>
         </div>
 
       </div>
