@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   LayoutDashboard, Package, Tags, ShoppingCart, Users, Star, Ticket,
   Image as ImageIcon, LayoutTemplate, Video, Boxes, TrendingUp, Bell,
   Settings, ShieldCheck, CreditCard, Truck, ChevronDown, ChevronRight,
   Plus, Search, MoreVertical, Pencil, Trash2, Copy, EyeOff, Eye,
   Upload, ArrowUpRight, ArrowDownRight, Filter, X, Check, Box,
+  LogOut, UserPlus, Lock, Mail, Send,
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -74,6 +75,34 @@ const customers = [
   { name: "Habiba Sami", email: "habiba.sami@mail.com", orders: 2, spent: 720, last: "Jul 15, 2026", blocked: false },
 ];
 
+const ADMIN_EMAIL = "admin@store.com";
+const ADMIN_PASSWORD = "admin123";
+
+const initialEmployees = [
+  {
+    id: "E-1",
+    name: "Ziad Mostafa",
+    email: "ziad.mostafa@store.com",
+    password: "ziad123",
+    active: true,
+    permissions: ["dashboard", "products", "orders", "inventory"],
+  },
+  {
+    id: "E-2",
+    name: "Rana Hassan",
+    email: "rana.hassan@store.com",
+    password: "rana123",
+    active: true,
+    permissions: ["dashboard", "customers", "reviews", "notifications"],
+  },
+];
+
+const initialSupportRequests = [
+  { id: "S-1", email: "mona.tarek@mail.com", status: "Not replied", date: "Jul 22, 2026" },
+  { id: "S-2", email: "ahmed.samir@mail.com", status: "Replied", date: "Jul 21, 2026" },
+  { id: "S-3", email: "laila.fouad@mail.com", status: "Not replied", date: "Jul 20, 2026" },
+];
+
 const statusOptions = ["Pending", "Confirmed", "Preparing", "Shipped", "Delivered", "Cancelled"];
 
 const allColors = ["Space Black", "Silver", "Gold", "Blue Titanium", "Natural Titanium", "Midnight"];
@@ -110,6 +139,7 @@ const NAV = [
   { key: "payments", label: "Payments", icon: CreditCard },
   { key: "shipping", label: "Shipping", icon: Truck },
   { key: "notifications", label: "Notifications", icon: Bell },
+  { key: "support", label: "Support Requests", icon: Mail },
   { key: "admins", label: "Admins", icon: ShieldCheck },
   { key: "settings", label: "Settings", icon: Settings },
 ];
@@ -304,6 +334,108 @@ function Modal({ title, subtitle, onClose, children, footer, wide }) {
   );
 }
 
+/* --------------------------------- Login ---------------------------------- */
+
+function LoginScreen({ onLogin, employees }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const attemptLogin = (mail, pass) => {
+    const ok = onLogin(mail, pass);
+    if (!ok) setError("Incorrect email or password, or the account is suspended.");
+  };
+
+  const submit = () => {
+    if (!email.trim() || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+    attemptLogin(email, password);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submit();
+    }
+  };
+
+  return (
+    <div
+      className="min-h-screen bg-black flex items-center justify-center p-4"
+      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, sans-serif" }}
+    >
+      <div className="w-full max-w-sm">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-11 h-11 rounded-2xl bg-white flex items-center justify-center mb-4">
+            <Lock size={18} className="text-black" strokeWidth={2} />
+          </div>
+          <h1 className="text-white text-xl font-semibold tracking-tight">Store Admin</h1>
+          <p className="text-zinc-500 text-sm mt-1">Sign in with your work email to continue.</p>
+        </div>
+
+        <Card className="p-6">
+          <div className="space-y-4">
+            <Field label="Email address">
+              <input
+                type="email"
+                autoFocus
+                className={inputCls}
+                placeholder="you@store.com"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                onKeyDown={handleKeyDown}
+              />
+            </Field>
+            <Field label="Password">
+              <input
+                type="password"
+                className={inputCls}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(""); }}
+                onKeyDown={handleKeyDown}
+              />
+            </Field>
+            {error && <p className="text-xs text-red-400">{error}</p>}
+            <button
+              type="button"
+              onClick={submit}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-black text-sm font-medium hover:bg-zinc-200 transition-colors"
+            >
+              Sign in
+            </button>
+          </div>
+        </Card>
+
+        <div className="mt-6">
+          <p className="text-[11px] uppercase tracking-wider text-zinc-600 mb-2 text-center">Demo accounts</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <button
+              type="button"
+              onClick={() => { setEmail(ADMIN_EMAIL); setPassword(ADMIN_PASSWORD); attemptLogin(ADMIN_EMAIL, ADMIN_PASSWORD); }}
+              className="text-xs px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-zinc-300 hover:text-white hover:border-white/[0.2] transition-colors"
+            >
+              Admin
+            </button>
+            {employees.filter((emp) => emp.active).map((emp) => (
+              <button
+                type="button"
+                key={emp.email}
+                onClick={() => { setEmail(emp.email); setPassword(emp.password); attemptLogin(emp.email, emp.password); }}
+                className="text-xs px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.08] text-zinc-300 hover:text-white hover:border-white/[0.2] transition-colors"
+              >
+                {emp.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const emptyProduct = {
   id: "",
   name: "",
@@ -472,6 +604,130 @@ function ProductFormModal({ initial, onClose, onSave }) {
   );
 }
 
+/* ------------------------------ Employee form ------------------------------- */
+
+const emptyEmployee = { name: "", email: "", password: "", active: true, permissions: [] };
+
+const ASSIGNABLE_NAV = NAV.filter((n) => n.key !== "admins");
+
+function EmployeeFormModal({ initial, onClose, onSave }) {
+  const isEdit = Boolean(initial);
+  const [form, setForm] = useState(initial ? { ...emptyEmployee, ...initial } : emptyEmployee);
+
+  const togglePermission = (key) =>
+    setForm((f) => ({
+      ...f,
+      permissions: f.permissions.includes(key)
+        ? f.permissions.filter((p) => p !== key)
+        : [...f.permissions, key],
+    }));
+
+  const toggleAll = () =>
+    setForm((f) => ({
+      ...f,
+      permissions: f.permissions.length === ASSIGNABLE_NAV.length ? [] : ASSIGNABLE_NAV.map((n) => n.key),
+    }));
+
+  const canSave = form.name.trim() && form.email.trim() && (isEdit || form.password.trim());
+
+  return (
+    <Modal
+      title={isEdit ? "Edit employee" : "Add employee"}
+      subtitle={isEdit ? `Editing ${initial.email}` : "Invite a teammate and choose exactly what they can access."}
+      onClose={onClose}
+      wide
+      footer={
+        <>
+          <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm text-zinc-400 hover:text-white transition-colors">
+            Cancel
+          </button>
+          <PrimaryBtn icon={Check} disabled={!canSave} onClick={() => canSave && onSave(form)}>
+            {isEdit ? "Save changes" : "Add employee"}
+          </PrimaryBtn>
+        </>
+      }
+    >
+      {/* Basic info */}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3">Basic info</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Field label="Full name">
+            <input
+              className={inputCls}
+              placeholder="e.g. Ziad Mostafa"
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            />
+          </Field>
+          <Field label="Email address" hint="The employee signs in with this email.">
+            <input
+              type="email"
+              className={inputCls}
+              placeholder="name@store.com"
+              value={form.email}
+              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            />
+          </Field>
+          <Field
+            label="Password"
+            hint={isEdit ? "Leave blank to keep the current password." : "The employee signs in with this password."}
+          >
+            <input
+              type="text"
+              className={inputCls}
+              placeholder={isEdit ? "••••••••" : "Set a password"}
+              value={form.password}
+              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+            />
+          </Field>
+        </div>
+        <label className="flex items-center gap-2 mt-4 cursor-pointer w-fit">
+          <input
+            type="checkbox"
+            checked={form.active}
+            onChange={(e) => setForm((f) => ({ ...f, active: e.target.checked }))}
+            className="w-4 h-4 rounded accent-white"
+          />
+          <span className="text-sm text-zinc-300">Account active (can sign in)</span>
+        </label>
+      </div>
+
+      {/* Permissions */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">Permissions</p>
+          <button type="button" onClick={toggleAll} className="text-xs text-zinc-400 hover:text-white">
+            {form.permissions.length === ASSIGNABLE_NAV.length ? "Clear all" : "Select all"}
+          </button>
+        </div>
+        <p className="text-xs text-zinc-600 mb-3">Choose which sections of the dashboard this employee is allowed to see.</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+          {ASSIGNABLE_NAV.map((item) => {
+            const Icon = item.icon;
+            const checked = form.permissions.includes(item.key);
+            return (
+              <button
+                type="button"
+                key={item.key}
+                onClick={() => togglePermission(item.key)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-medium transition-colors ${
+                  checked
+                    ? "bg-white text-black border-white"
+                    : "bg-white/[0.03] text-zinc-400 border-white/[0.08] hover:text-white hover:border-white/[0.2]"
+                }`}
+              >
+                <Icon size={14} strokeWidth={1.75} />
+                <span className="flex-1 text-left">{item.label}</span>
+                {checked && <Check size={13} />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
 /* ------------------------------ Placeholder view --------------------------- */
 
 function PlaceholderView({ title, description, chips = [] }) {
@@ -499,7 +755,53 @@ function PlaceholderView({ title, description, chips = [] }) {
 
 /* -------------------------------- Dashboard -------------------------------- */
 
-function DashboardHome() {
+function SupportWidget({ onSubmit, className = "" }) {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const submit = () => {
+    if (!email.trim()) return;
+    onSubmit(email.trim());
+    setEmail("");
+    setSent(true);
+    setTimeout(() => setSent(false), 3000);
+  };
+
+  return (
+    <Card className={`p-5 ${className}`}>
+      <div className="flex items-center gap-2 mb-1">
+        <Mail size={15} className="text-zinc-400" strokeWidth={1.75} />
+        <h3 className="text-sm font-medium text-white">Need help? Contact support</h3>
+      </div>
+      <p className="text-xs text-zinc-500 mb-4">
+        Storefront preview — this is the widget customers see on your homepage.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="email"
+          className={`${inputCls} flex-1`}
+          placeholder="you@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); submit(); } }}
+        />
+        <button
+          type="button"
+          onClick={submit}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white text-black text-sm font-medium hover:bg-zinc-200 transition-colors shrink-0"
+        >
+          <Send size={14} strokeWidth={2} /> Send
+        </button>
+      </div>
+      {sent && <p className="text-xs text-emerald-400 mt-2">Thanks! Our team will get back to you shortly.</p>}
+    </Card>
+  );
+}
+
+function DashboardHome({ supportRequests, onViewAllOrders }) {
+  const outOfStock = products.filter((p) => p.stock === 0);
+  const openSupport = supportRequests.filter((r) => r.status === "Not replied").length;
+
   return (
     <div>
       <div className="relative mb-8">
@@ -519,9 +821,46 @@ function DashboardHome() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard label="Pending Orders" value="27" icon={ShoppingCart} />
         <StatCard label="Completed Orders" value="1,182" icon={Check} />
-        <StatCard label="Low Stock" value="9 items" delta="Needs attention" icon={Boxes} />
-        <StatCard label="Best Seller" value="iPhone 17 Pro" icon={Star} />
+        <StatCard
+          label="Out of Stock"
+          value={`${outOfStock.length} items`}
+          delta={outOfStock.length > 0 ? "Needs attention" : undefined}
+          icon={Boxes}
+        />
+        <StatCard label="Open Support" value={`${openSupport} pending`} icon={Mail} />
       </div>
+
+      <Card className="p-5 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-sm font-medium text-white">Out of stock</h3>
+            <p className="text-xs text-zinc-500 mt-0.5">Products with zero units left — restock these first.</p>
+          </div>
+          <Pill className={outOfStock.length > 0 ? "bg-red-400/10 text-red-300 border-red-400/20" : "bg-emerald-400/10 text-emerald-300 border-emerald-400/20"}>
+            {outOfStock.length} items
+          </Pill>
+        </div>
+        {outOfStock.length === 0 ? (
+          <p className="text-xs text-zinc-600">Nothing out of stock right now.</p>
+        ) : (
+          <div className="space-y-2">
+            {outOfStock.map((p) => (
+              <div key={p.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-zinc-400 shrink-0">
+                    <Package size={14} strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-zinc-100 font-medium">{p.name}</p>
+                    <p className="text-xs text-zinc-500">{p.id} · {p.category}</p>
+                  </div>
+                </div>
+                <Pill className="bg-red-400/10 text-red-300 border-red-400/20">Out of stock</Pill>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <Card className="p-5 lg:col-span-2">
@@ -581,10 +920,29 @@ function DashboardHome() {
         </Card>
       </div>
 
+      <Card className="p-5 mb-6">
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="text-sm font-medium text-white">Support requests</h3>
+          <Pill className="bg-amber-400/10 text-amber-300 border-amber-400/20">{openSupport} awaiting a reply</Pill>
+        </div>
+        <p className="text-xs text-zinc-500 mb-4">Emails customers send from the homepage support widget.</p>
+        <div className="space-y-2">
+          {supportRequests.length === 0 && <p className="text-xs text-zinc-600">No requests yet.</p>}
+          {supportRequests.slice(0, 5).map((r) => (
+            <div key={r.id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs">
+              <span className="text-zinc-300 truncate">{r.email}</span>
+              <Pill className={r.status === "Replied" ? "bg-emerald-400/10 text-emerald-300 border-emerald-400/20 shrink-0" : "bg-amber-400/10 text-amber-300 border-amber-400/20 shrink-0"}>
+                {r.status}
+              </Pill>
+            </div>
+          ))}
+        </div>
+      </Card>
+
       <Card className="p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-white">Latest orders</h3>
-          <button className="text-xs text-zinc-400 hover:text-white transition-colors">View all</button>
+          <button onClick={onViewAllOrders} className="text-xs text-zinc-400 hover:text-white transition-colors">View all</button>
         </div>
         <div className="overflow-x-auto -mx-5">
           <table className="w-full min-w-[560px]">
@@ -613,16 +971,30 @@ function DashboardHome() {
 
 /* --------------------------------- Products --------------------------------- */
 
-function ProductsView() {
+function ProductsView({ initialSearch = "" }) {
   const [cat, setCat] = useState("All");
   const [list, setList] = useState(products);
   const [modalMode, setModalMode] = useState(null); // null | "add" | "edit"
   const [editingId, setEditingId] = useState(null);
+  const [search, setSearch] = useState(initialSearch);
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [filterOpen, setFilterOpen] = useState(false);
 
-  const filtered = useMemo(
-    () => (cat === "All" ? list : list.filter((p) => p.category === cat)),
-    [cat, list]
-  );
+  useEffect(() => {
+    if (initialSearch) setSearch(initialSearch);
+  }, [initialSearch]);
+
+  const filtered = useMemo(() => {
+    let result = cat === "All" ? list : list.filter((p) => p.category === cat);
+    if (statusFilter === "Active") result = result.filter((p) => p.status === "Active");
+    if (statusFilter === "Hidden") result = result.filter((p) => p.status === "Hidden");
+    if (statusFilter === "Out of stock") result = result.filter((p) => p.stock === 0);
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      result = result.filter((p) => p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q));
+    }
+    return result;
+  }, [cat, list, statusFilter, search]);
 
   const editingProduct = editingId ? list.find((p) => p.id === editingId) : null;
 
@@ -683,9 +1055,38 @@ function ProductsView() {
         <div className="flex items-center gap-3 px-5 py-3.5 border-b border-white/[0.06]">
           <div className="flex items-center gap-2 flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-3 py-2 max-w-xs">
             <Search size={14} className="text-zinc-500" />
-            <input placeholder="Search products…" className="bg-transparent text-sm text-zinc-200 placeholder:text-zinc-600 outline-none w-full" />
+            <input
+              placeholder="Search products…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-transparent text-sm text-zinc-200 placeholder:text-zinc-600 outline-none w-full"
+            />
+            {search && (
+              <button onClick={() => setSearch("")} className="text-zinc-500 hover:text-white shrink-0">
+                <X size={13} />
+              </button>
+            )}
           </div>
-          <IconBtn icon={Filter} />
+          <div className="relative">
+            <IconBtn icon={Filter} onClick={() => setFilterOpen((o) => !o)} />
+            {statusFilter !== "All" && (
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white" />
+            )}
+            {filterOpen && (
+              <div className="absolute right-0 z-20 mt-1 w-40 rounded-xl border border-white/10 bg-zinc-900 shadow-2xl p-1">
+                {["All", "Active", "Hidden", "Out of stock"].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => { setStatusFilter(s); setFilterOpen(false); }}
+                    className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-zinc-300 hover:bg-white/[0.06] flex items-center justify-between"
+                  >
+                    {s}
+                    {s === statusFilter && <Check size={12} />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px]">
@@ -733,6 +1134,13 @@ function ProductsView() {
                   </td>
                 </tr>
               ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-10 text-center text-sm text-zinc-500">
+                    No products match your search or filter.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -814,6 +1222,13 @@ function OrdersView() {
 /* -------------------------------- Customers -------------------------------- */
 
 function CustomersView() {
+  const [list, setList] = useState(customers);
+
+  const handleToggleBlock = (email) =>
+    setList((l) => l.map((c) => (c.email === email ? { ...c, blocked: !c.blocked } : c)));
+
+  const handleDelete = (email) => setList((l) => l.filter((c) => c.email !== email));
+
   return (
     <div>
       <SectionHeader title="Customers" subtitle="Everyone who has ever placed an order in your store." />
@@ -826,7 +1241,7 @@ function CustomersView() {
               </tr>
             </thead>
             <tbody>
-              {customers.map((c) => (
+              {list.map((c) => (
                 <tr key={c.email} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
@@ -843,12 +1258,221 @@ function CustomersView() {
                   <td className="px-4 py-3 text-sm text-zinc-500">{c.last}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1.5">
-                      <IconBtn icon={EyeOff} title="Block user" />
-                      <IconBtn icon={Trash2} title="Delete user" />
+                      <IconBtn
+                        icon={c.blocked ? Eye : EyeOff}
+                        title={c.blocked ? "Unblock user" : "Block user"}
+                        onClick={() => handleToggleBlock(c.email)}
+                      />
+                      <IconBtn icon={Trash2} title="Delete user" onClick={() => handleDelete(c.email)} />
                     </div>
                   </td>
                 </tr>
               ))}
+              {list.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-4 py-10 text-center text-sm text-zinc-500">
+                    No customers left.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+/* ------------------------------ Admins / Employees --------------------------- */
+
+function AdminsView({ employees, setEmployees }) {
+  const [modalMode, setModalMode] = useState(null); // null | "add" | "edit"
+  const [editingId, setEditingId] = useState(null);
+
+  const editingEmployee = editingId ? employees.find((e) => e.id === editingId) : null;
+
+  const handleSave = (form) => {
+    if (modalMode === "edit") {
+      setEmployees((list) =>
+        list.map((e) => (e.id === editingId ? { ...e, ...form, password: form.password.trim() ? form.password : e.password } : e))
+      );
+    } else {
+      const newId = `E-${Date.now()}`;
+      setEmployees((list) => [{ ...form, id: newId }, ...list]);
+    }
+    setModalMode(null);
+    setEditingId(null);
+  };
+
+  const handleDelete = (id) => setEmployees((list) => list.filter((e) => e.id !== id));
+  const handleToggleActive = (id) =>
+    setEmployees((list) => list.map((e) => (e.id === id ? { ...e, active: !e.active } : e)));
+
+  return (
+    <div>
+      <SectionHeader
+        title="Admins & Employees"
+        subtitle="Invite teammates by email and choose exactly what each one can access."
+        action={<PrimaryBtn icon={UserPlus} onClick={() => setModalMode("add")}>Add employee</PrimaryBtn>}
+      />
+
+      {modalMode && (
+        <EmployeeFormModal
+          initial={modalMode === "edit" ? editingEmployee : null}
+          onClose={() => { setModalMode(null); setEditingId(null); }}
+          onSave={handleSave}
+        />
+      )}
+
+      <Card className="p-5 mb-5 flex items-start gap-3">
+        <div className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center text-zinc-300 shrink-0">
+          <ShieldCheck size={16} strokeWidth={1.75} />
+        </div>
+        <div>
+          <p className="text-sm text-zinc-200 font-medium">You are the primary admin</p>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            You always have full access to every section. Employees only see the pages you grant them below,
+            and sign in using the email and password you set here.
+          </p>
+        </div>
+      </Card>
+
+      <Card className="p-0 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px]">
+            <thead>
+              <tr className="border-b border-white/[0.06]">
+                <Th>Employee</Th><Th>Email</Th><Th>Permissions</Th><Th>Status</Th><Th className="text-right pr-5">Actions</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {employees.map((e) => (
+                <tr key={e.id} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02]">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-white/[0.08] border border-white/[0.08] flex items-center justify-center text-xs text-zinc-300 font-medium">
+                        {e.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
+                      </div>
+                      <span className="text-sm text-zinc-100 font-medium">{e.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-zinc-400">{e.email}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1 max-w-xs">
+                      {e.permissions.length === 0 && <span className="text-xs text-zinc-600">No access yet</span>}
+                      {e.permissions.slice(0, 3).map((k) => (
+                        <Pill key={k} className="bg-white/[0.04] text-zinc-300 border-white/[0.08]">
+                          {NAV.find((n) => n.key === k)?.label ?? k}
+                        </Pill>
+                      ))}
+                      {e.permissions.length > 3 && (
+                        <Pill className="bg-white/[0.04] text-zinc-500 border-white/[0.08]">+{e.permissions.length - 3} more</Pill>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <button onClick={() => handleToggleActive(e.id)}>
+                      {e.active ? (
+                        <Pill className="bg-emerald-400/10 text-emerald-300 border-emerald-400/20">Active</Pill>
+                      ) : (
+                        <Pill className="bg-zinc-500/10 text-zinc-400 border-zinc-500/20">Suspended</Pill>
+                      )}
+                    </button>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <IconBtn icon={Pencil} title="Edit permissions" onClick={() => { setEditingId(e.id); setModalMode("edit"); }} />
+                      <IconBtn icon={Trash2} title="Remove employee" onClick={() => handleDelete(e.id)} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {employees.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-4 py-10 text-center text-sm text-zinc-500">
+                    No employees yet. Add one to share access to specific sections.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+/* ------------------------------ Support requests ----------------------------- */
+
+function SupportRequestsView({ supportRequests, setSupportRequests, onNewSupportRequest }) {
+  const handleToggleStatus = (id) =>
+    setSupportRequests((list) =>
+      list.map((r) => (r.id === id ? { ...r, status: r.status === "Replied" ? "Not replied" : "Replied" } : r))
+    );
+
+  const handleDelete = (id) => setSupportRequests((list) => list.filter((r) => r.id !== id));
+
+  const openCount = supportRequests.filter((r) => r.status === "Not replied").length;
+
+  return (
+    <div>
+      <SectionHeader
+        title="Support Requests"
+        subtitle="Every email a customer sends from the homepage support widget lands here."
+      />
+
+      <SupportWidget onSubmit={onNewSupportRequest} className="mb-5" />
+
+      <Card className="p-0 overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
+          <p className="text-sm text-zinc-300">{supportRequests.length} total</p>
+          <Pill className="bg-amber-400/10 text-amber-300 border-amber-400/20">{openCount} not replied</Pill>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[560px]">
+            <thead>
+              <tr className="border-b border-white/[0.06]">
+                <Th>Email</Th><Th>Date</Th><Th>Status</Th><Th className="text-right pr-5">Actions</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {supportRequests.map((r) => (
+                <tr key={r.id} className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02]">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-white/[0.08] border border-white/[0.08] flex items-center justify-center text-zinc-400 shrink-0">
+                        <Mail size={13} strokeWidth={1.75} />
+                      </div>
+                      <span className="text-sm text-zinc-100 font-medium">{r.email}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-zinc-500">{r.date}</td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => handleToggleStatus(r.id)}
+                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+                        r.status === "Replied"
+                          ? "bg-emerald-400/10 text-emerald-300 border-emerald-400/20"
+                          : "bg-amber-400/10 text-amber-300 border-amber-400/20"
+                      }`}
+                    >
+                      {r.status}
+                    </button>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <IconBtn icon={Trash2} title="Delete" onClick={() => handleDelete(r.id)} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {supportRequests.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="px-4 py-10 text-center text-sm text-zinc-500">
+                    No support requests yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -894,7 +1518,7 @@ function AnalyticsView() {
 
 /* --------------------------------- Sidebar ---------------------------------- */
 
-function Sidebar({ active, setActive, open, setOpen }) {
+function Sidebar({ active, setActive, open, setOpen, nav, currentUser, onLogout }) {
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -920,7 +1544,7 @@ function Sidebar({ active, setActive, open, setOpen }) {
         </div>
 
         <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-0.5">
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const Icon = item.icon;
             const isActive = active === item.key;
             if (item.children) {
@@ -970,14 +1594,22 @@ function Sidebar({ active, setActive, open, setOpen }) {
         </nav>
 
         <div className="p-3 border-t border-white/[0.06] shrink-0">
-          <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-white/[0.05] cursor-pointer">
-            <div className="w-8 h-8 rounded-full bg-white/[0.08] border border-white/[0.08] flex items-center justify-center text-xs text-zinc-300 font-medium">
-              AD
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-white/[0.05]">
+            <div className="w-8 h-8 rounded-full bg-white/[0.08] border border-white/[0.08] flex items-center justify-center text-xs text-zinc-300 font-medium shrink-0">
+              {currentUser.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-zinc-200 font-medium truncate">Admin</p>
-              <p className="text-[11px] text-zinc-500 truncate">admin@store.com</p>
+              <div className="flex items-center gap-1.5">
+                <p className="text-xs text-zinc-200 font-medium truncate">{currentUser.name}</p>
+                {currentUser.role === "admin" && (
+                  <Pill className="bg-white/[0.06] text-zinc-400 border-white/[0.08] px-1.5 py-0 text-[9px]">Admin</Pill>
+                )}
+              </div>
+              <p className="text-[11px] text-zinc-500 truncate">{currentUser.email}</p>
             </div>
+            <button onClick={onLogout} title="Log out" className="text-zinc-500 hover:text-white transition-colors shrink-0">
+              <LogOut size={15} strokeWidth={1.75} />
+            </button>
           </div>
         </div>
       </aside>
@@ -999,19 +1631,85 @@ const TITLES = {
   payments: ["Payments", "Stripe transactions, refunds and failures at a glance.", ["Transactions", "Refunds", "Failed payments"]],
   shipping: ["Shipping", "Define how and what it costs to ship an order.", ["Shipping methods", "Shipping cost", "Tracking number"]],
   notifications: ["Notifications", "Stay on top of what needs your attention.", ["New order", "Low stock", "New customer", "Payment failed"]],
-  admins: ["Admins", "Manage who has access to this dashboard.", ["Add admin", "Roles", "Permissions"]],
   settings: ["Settings", "The core configuration for your storefront.", ["Website name", "Logo", "Favicon", "Social links", "Contact info", "Footer", "SEO"]],
 };
 
 export default function AdminDashboard() {
+  const [employees, setEmployees] = useState(initialEmployees);
+  const [currentUser, setCurrentUser] = useState(null); // null = signed out
   const [active, setActive] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [supportRequests, setSupportRequests] = useState(initialSupportRequests);
+  const [headerSearch, setHeaderSearch] = useState("");
+  const [productSearch, setProductSearch] = useState("");
 
+  const handleLogin = (rawEmail, rawPassword) => {
+    const email = rawEmail.trim().toLowerCase();
+    const password = rawPassword;
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      setCurrentUser({
+        role: "admin",
+        name: "Admin",
+        email: ADMIN_EMAIL,
+        permissions: NAV.map((n) => n.key),
+      });
+      setActive("dashboard");
+      return true;
+    }
+
+    const match = employees.find((e) => e.email.toLowerCase() === email);
+    if (match && match.active && match.password === password) {
+      setCurrentUser({
+        role: "employee",
+        name: match.name,
+        email: match.email,
+        permissions: match.permissions,
+      });
+      setActive(match.permissions[0] || "dashboard");
+      return true;
+    }
+
+    return false;
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setActive("dashboard");
+  };
+
+  const handleNewSupportRequest = (email) => {
+    setSupportRequests((list) => [
+      { id: `S-${Date.now()}`, email, status: "Not replied", date: "Today" },
+      ...list,
+    ]);
+  };
+
+  const handleHeaderSearchSubmit = () => {
+    if (!headerSearch.trim()) return;
+    setProductSearch(headerSearch.trim());
+    setActive("products");
+  };
+
+  if (!currentUser) {
+    return <LoginScreen onLogin={handleLogin} employees={employees} />;
+  }
+
+  const visibleNav = NAV.filter((n) => currentUser.permissions.includes(n.key));
   const activeLabel = NAV.find((n) => n.key === active)?.label ?? "Dashboard";
+  const canSeeActive = currentUser.permissions.includes(active);
 
   return (
     <div className="min-h-screen bg-black flex" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, sans-serif" }}>
-      <Sidebar active={active} setActive={setActive} open={sidebarOpen} setOpen={setSidebarOpen} />
+      <Sidebar
+        active={active}
+        setActive={setActive}
+        open={sidebarOpen}
+        setOpen={setSidebarOpen}
+        nav={visibleNav}
+        currentUser={currentUser}
+        onLogout={handleLogout}
+      />
 
       <div className="flex-1 min-w-0">
         <header className="sticky top-0 z-20 h-16 flex items-center justify-between px-4 lg:px-8 border-b border-white/[0.06] bg-black/70 backdrop-blur-md">
@@ -1024,19 +1722,59 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-xl px-3 py-1.5">
               <Search size={13} className="text-zinc-500" />
-              <input placeholder="Search…" className="bg-transparent text-xs text-zinc-300 placeholder:text-zinc-600 outline-none w-36" />
+              <input
+                placeholder="Search products…"
+                value={headerSearch}
+                onChange={(e) => setHeaderSearch(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleHeaderSearchSubmit(); } }}
+                className="bg-transparent text-xs text-zinc-300 placeholder:text-zinc-600 outline-none w-36"
+              />
             </div>
-            <IconBtn icon={Bell} />
+            <IconBtn
+              icon={Bell}
+              onClick={() => currentUser.permissions.includes("notifications") && setActive("notifications")}
+            />
           </div>
         </header>
 
         <main className="p-4 lg:p-8 max-w-[1400px]">
-          {active === "dashboard" && <DashboardHome />}
-          {active === "products" && <ProductsView />}
-          {active === "orders" && <OrdersView />}
-          {active === "customers" && <CustomersView />}
-          {active === "analytics" && <AnalyticsView />}
-          {TITLES[active] && (
+          {!canSeeActive && (
+            <Card className="p-10 flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-2xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center mb-4">
+                <ShieldCheck size={20} className="text-zinc-400" strokeWidth={1.5} />
+              </div>
+              <p className="text-sm text-zinc-400 max-w-md">
+                You don't have access to this section. Ask your admin to grant you permission from Admins &amp; Employees.
+              </p>
+            </Card>
+          )}
+          {canSeeActive && active === "dashboard" && (
+            <DashboardHome
+              supportRequests={supportRequests}
+              onViewAllOrders={() => currentUser.permissions.includes("orders") && setActive("orders")}
+            />
+          )}
+          {canSeeActive && active === "products" && <ProductsView initialSearch={productSearch} />}
+          {canSeeActive && active === "orders" && <OrdersView />}
+          {canSeeActive && active === "customers" && <CustomersView />}
+          {canSeeActive && active === "analytics" && <AnalyticsView />}
+          {canSeeActive && active === "support" && (
+            <SupportRequestsView
+              supportRequests={supportRequests}
+              setSupportRequests={setSupportRequests}
+              onNewSupportRequest={handleNewSupportRequest}
+            />
+          )}
+          {canSeeActive && active === "admins" && currentUser.role === "admin" && (
+            <AdminsView employees={employees} setEmployees={setEmployees} />
+          )}
+          {canSeeActive && active === "admins" && currentUser.role !== "admin" && (
+            <PlaceholderView
+              title="Admins & Employees"
+              description="Only the primary admin can manage employee accounts and permissions."
+            />
+          )}
+          {canSeeActive && TITLES[active] && (
             <PlaceholderView title={TITLES[active][0]} description={TITLES[active][1]} chips={TITLES[active][2]} />
           )}
         </main>
